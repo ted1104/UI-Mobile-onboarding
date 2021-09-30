@@ -44,12 +44,18 @@ const OnBoarding = () => {
         horizontal
         pagingEnabled
         scrollEnabled
-        snapToAlignment="center">
+        snapToAlignment="center"
+        showsHorizontalScrollIndicator={false}>
         {onBoardings.map((item, index) => (
           <View key={index} style={{width: SIZES.width}}>
             {/* image */}
             <View style={styles.container_img}>
               <Image source={item.img} style={styles.img} />
+            </View>
+            {/* Text */}
+            <View style={styles.containerText}>
+              <Text style={styles.textTitle}>{item.title}</Text>
+              <Text style={styles.description}>{item.description}</Text>
             </View>
           </View>
         ))}
@@ -74,9 +80,27 @@ const styles = StyleSheet.create({
   },
   container_img: {
     // backgroundColor: 'black',
+    flex: 1,
     width: SIZES.width,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  containerText: {
+    position: 'absolute',
+    bottom: '10%',
+    left: 40,
+    right: 40,
+  },
+  textTitle: {
+    ...FONTS.h1,
+    color: COLORS.gray,
+    textAlign: 'center',
+  },
+  description: {
+    ...FONTS.body3,
+    textAlign: 'center',
+    marginTop: SIZES.base,
+    color: COLORS.gray,
   },
 });
 export default OnBoarding;
