@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   SafeAreaView,
@@ -6,6 +6,7 @@ import {
   Text,
   Animated,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 
 //constant
@@ -38,7 +39,18 @@ const onBoardings = [
 ];
 
 const OnBoarding = () => {
+  const [completed, SetCompleted] = React.useState(false);
   const scrollX = new Animated.Value(0);
+  React.useEffect(() => {
+    //To check if use has finish to scrolling the onBoard pages
+    scrollX.addListener(({value}) => {
+      if (Math.floor(value / SIZES.width) === onBoardings.length - 1) {
+        SetCompleted(true);
+      }
+    });
+
+    return () => scrollX.removeListener();
+  }, []);
 
   function _renderContent() {
     return (
@@ -65,17 +77,44 @@ const OnBoarding = () => {
               <Text style={styles.textTitle}>{item.title}</Text>
               <Text style={styles.description}>{item.description}</Text>
             </View>
+
+            <TouchableOpacity
+              style={styles.btnSkip}
+              onPress={() => console.log('pressed skip')}>
+              <Text style={{...FONTS.h3, color: COLORS.white}}>
+                {completed ? "Let's Go" : 'Skip'}
+              </Text>
+            </TouchableOpacity>
           </View>
         ))}
       </Animated.ScrollView>
     );
   }
   function _renderDots() {
+    const dotPosition = Animated.divide(scrollX, SIZES.width);
+    // console.log(dotPosition);
     return (
       <View style={styles.dotContainer}>
-        {onBoardings.map((item, index) => (
-          <View key={`dot-${index}`} style={styles.dot}></View>
-        ))}
+        {onBoardings.map((item, index) => {
+          const opacity = dotPosition.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [1, 0.3, 1],
+            extrapolate: 'clamp',
+          });
+          const dotSize = dotPosition.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [SIZES.base, 17, SIZES.base],
+            extrapolate: 'clamp',
+          });
+          return (
+            <Animated.View
+              key={`dot-${index}`}
+              style={[
+                styles.dot,
+                {width: dotSize, height: dotSize},
+              ]}></Animated.View>
+          );
+        })}
       </View>
     );
   }
@@ -128,13 +167,27 @@ const styles = StyleSheet.create({
   },
   dotContainer: {
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   dot: {
     borderRadius: SIZES.radius,
     backgroundColor: COLORS.blue,
     marginHorizontal: SIZES.radius / 2,
-    height: 20,
-    width: 20,
+    // height: 15,
+    // width: 15,
+  },
+  btnSkip: {
+    backgroundColor: COLORS.blue,
+    position: 'absolute',
+    bottom: 4,
+    right: 0,
+    width: 100,
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderTopLeftRadius: 30,
+    borderBottomLeftRadius: 30,
   },
 });
 export default OnBoarding;
