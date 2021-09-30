@@ -1,0 +1,9 @@
+PACKAGE INSTALLED
+-----------------
+- npm install @react-navigation/native
+- npm install react-native-reanimated react-native-gesture-handler react-native-screens react-native-safe-area-context @react-native-community/masked-view @react-navigation/stack
+- npx react-native link : link assets to different version ios and android
+RUN ON IOS
+----------
+- cd ios 
+- pod install 
