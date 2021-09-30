@@ -38,14 +38,22 @@ const onBoardings = [
 ];
 
 const OnBoarding = () => {
+  const scrollX = new Animated.Value(0);
+
   function _renderContent() {
     return (
       <Animated.ScrollView
         horizontal
         pagingEnabled
         scrollEnabled
+        decelerationRate={0}
+        scrollEventThrottle={16}
         snapToAlignment="center"
-        showsHorizontalScrollIndicator={false}>
+        showsHorizontalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {x: scrollX}}}],
+          {useNativeDriver: false},
+        )}>
         {onBoardings.map((item, index) => (
           <View key={index} style={{width: SIZES.width}}>
             {/* image */}
@@ -62,8 +70,20 @@ const OnBoarding = () => {
       </Animated.ScrollView>
     );
   }
+  function _renderDots() {
+    return (
+      <View style={styles.dotContainer}>
+        {onBoardings.map((item, index) => (
+          <View key={`dot-${index}`} style={styles.dot}></View>
+        ))}
+      </View>
+    );
+  }
   return (
-    <SafeAreaView style={styles.container}>{_renderContent()}</SafeAreaView>
+    <SafeAreaView style={styles.container}>
+      <View>{_renderContent()}</View>
+      <View style={styles.dotRootContainer}>{_renderDots()}</View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
@@ -101,6 +121,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: SIZES.base,
     color: COLORS.gray,
+  },
+  dotRootContainer: {
+    position: 'absolute',
+    bottom: SIZES.height > 700 ? '27%' : '20%',
+  },
+  dotContainer: {
+    flexDirection: 'row',
+  },
+  dot: {
+    borderRadius: SIZES.radius,
+    backgroundColor: COLORS.blue,
+    marginHorizontal: SIZES.radius / 2,
+    height: 20,
+    width: 20,
   },
 });
 export default OnBoarding;
