@@ -1,8 +1,15 @@
 PACKAGE INSTALLED
 -----------------
 - npm install @react-navigation/native
-- npm install react-native-reanimated react-native-gesture-handler react-native-screens react-native-safe-area-context @react-native-community/masked-view @react-navigation/stack
+- npm install react-native-reanimated react-native-gesture-handler react-native-screens react-native-safe-area-context @react-native-community/masked-view @react-navigation/stack @react-navigation/bottom-tabs
 - npx react-native link : link assets to different version ios and android
+- npm i react-native-image-crop-picker --save
+- npm install --save react-native-material-menu
+- npm install react-redux
+- npm install redux
+- npm install reselect
+- npm install react-native-dotenv
+- npm install react-loader-spinner
 RUN ON IOS
 ----------
 - cd ios 
